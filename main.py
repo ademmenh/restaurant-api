@@ -12,7 +12,7 @@ async def home () -> dict [str, str]:
 
 
 
-MEALS =\
+MEALS = \
 [
     {'id':1, 'name':'meal1'},
     {'id':2, 'name':'meal2'},
@@ -22,3 +22,8 @@ MEALS =\
 @app.get ('/meals')
 async def meals () -> list[dict]:
     return MEALS
+
+
+@app.get ('/meals/{meal_ID}')
+async def meal (meal_ID:int) -> dict:
+    return MEALS[meal_ID]
