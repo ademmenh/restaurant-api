@@ -14,16 +14,25 @@ async def home () -> dict [str, str]:
 
 MEALS = \
 [
-    {'id':1, 'name':'meal1'},
-    {'id':2, 'name':'meal2'},
-    {'id':3, 'name':'meal3'},
+    {'id':777, 'name':'meal1'},
+    {'id':19, 'name':'meal2'},
+    {'id':28, 'name':'meal3'},
 ]
 
 @app.get ('/meals')
+
 async def meals () -> list[dict]:
     return MEALS
 
 
-@app.get ('/meals/{meal_ID}')
+
+
+
+@app.get ('/meal/{meal_ID}')
+
 async def meal (meal_ID:int) -> dict:
-    return MEALS[meal_ID]
+    for dic in  MEALS:
+        if dic['id']==meal_ID:
+            return dic
+            break
+            
