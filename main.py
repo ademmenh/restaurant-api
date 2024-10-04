@@ -19,20 +19,22 @@ MEALS = \
     {'id':28, 'name':'meal3'},
 ]
 
-@app.get ('/meals')
+@app.get ('/meals/{mid}')
 
-async def meals () -> list[dict]:
-    return MEALS
+async def meals (mid : int|None) -> list[dict] | dict | str:
+
+    if mid is None:
+        return MEALS
+    elif isinstance (mid, int):
+        for dic in MEALS:
+            if dic['id']==mid :
+                return dic
+                break
+        return f"the {mid} mid do not exist !"
+    else:
+        return "the id must be an int"
 
 
 
 
 
-@app.get ('/meal/{meal_ID}')
-
-async def meal (meal_ID:int) -> dict:
-    for dic in  MEALS:
-        if dic['id']==meal_ID:
-            return dic
-            break
-            
