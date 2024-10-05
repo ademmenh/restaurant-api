@@ -45,10 +45,16 @@ async def meal (mid : int) -> dict :
 
 
 
+from enum import Enum
+class EnumGetGenre (Enum):
+    GENERE1 = 'genre1'
+    GENERE2 = 'genere2'
+    GENERE3 = 'genere3'
+
 
 @app.get ('/genre/{genre}')
-async def genre ( genre:str ) -> list[dict]:
-    return [ x for x in MEALS if x['genre'].lower() == genre.lower() ]
+async def genre ( genre:EnumGetGenre ) -> list[dict]:
+    return [ x for x in MEALS if x['genre'].lower() == genre.value ]
 
 
 
