@@ -48,7 +48,7 @@ async def meal (mid : int) -> dict :
 
 @app.get ('/genre/{genre}')
 async def genre ( genre:str ) -> list[dict]:
-    return [ x for x in MEALS if x['genre']==genre ]
+    return [ x for x in MEALS if x['genre'].lower() == genre.lower() ]
 
 
 
