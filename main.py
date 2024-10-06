@@ -38,11 +38,14 @@ async def Meals () -> list[Meal] :
 
 @app.get ('/meals/mid/')
 
-async def MealMid (mid : int) -> Meal :
-    for meal in MEALS:
-        if meal['id']==mid :
-            return Meal(**meal)
-    raise HTTPException (status_code=404, detail=f'the mid {mid} do not exist!')
+async def MealMid ( mid :int|None =None ) -> list[Meal] | Meal :
+    if mid is None:
+        return [ meal for meal in MEALS ]
+    else:
+        for meal in MEALS:
+            if meal['id']==mid :
+                return Meal(**meal)
+        raise HTTPException (status_code=404, detail=f'the mid {mid} do not exist!')
 
 
 
