@@ -3,10 +3,11 @@ from fastapi import FastAPI
 from fastapi import HTTPException
 
 from .schemas.enums import EnumMeals
-from .schemas.data import MEALS
-
 from .middlewares.validation import Meal
 
+
+from ..Model.data import MEALS
+from ..Model.schema import MealModel
 
 
 app = FastAPI()
@@ -28,10 +29,12 @@ async def home () -> dict [str, str]:
 
 @app.get ('/meals')
 
-async def Meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[Meal] :
-    vlMeals = [Meal(**meal) for meal in MEALS]
+async def Meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[MealModel] :
+    vlMeals = [MealModel(**meal) for meal in MEALS]
     if name:
         vlMeals = [meal for meal in vlMeals if meal.name==name]
     if genre:
         vlMeals = [meal for meal in vlMeals if meal.genre==genre.value]
     return vlMeals
+
+
