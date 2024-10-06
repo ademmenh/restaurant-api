@@ -5,6 +5,8 @@ from fastapi import HTTPException
 from .schemas.enums import *
 from .schemas.data import *
 
+from .middlewares.validation import *
+
 
 
 
@@ -22,16 +24,16 @@ async def home () -> dict [str, str]:
 
 
 @app.get ('/meals')
-async def meals () -> list[dict] :
-    return MEALS
+async def meals () -> list[Meal] :
+    return [ Meal(**meal) for meal in MEALS ]
 
 
 @app.get ('/meals/{mid}')
-async def meal (mid : int) -> dict :
+async def meal (mid : int) -> Meal :
     if isinstance (mid, int):
-        for dic in MEALS:
-            if dic['id']==mid :
-                return dic
+        for meal in MEALS:
+            if meal['id']==mid :
+                return meal
                 break
         raise HTTPException (status_code=404, detail=f'the mid {mid} do not exist!')
     else:
@@ -42,8 +44,8 @@ async def meal (mid : int) -> dict :
 
 
 @app.get ('/genre/{genre}')
-async def genre ( genre:EnumGetGenre ) -> list[dict]:
-    return [ x for x in MEALS if x['genre'].lower() == genre.value ]
+async def genre ( genre:EnumGetGenre ) -> list[Meal]:
+    return [ Meal(**meal) for meal in MEALS if meal['genre'].lower() == genre.value ]
 
 
 
