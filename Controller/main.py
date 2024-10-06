@@ -30,11 +30,11 @@ async def home () -> dict [str, str]:
 @app.get ('/meals')
 
 async def Meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[MealModel] :
-    vlMeals = [MealModel(**meal) for meal in MEALS]
+    vlMeals = MEALS.copy()
     if name:
-        vlMeals = [meal for meal in vlMeals if meal.name==name]
+        vlMeals = [meal for meal in vlMeals if meal['name']==name]
     if genre:
-        vlMeals = [meal for meal in vlMeals if meal.genre==genre.value]
+        vlMeals = [meal for meal in vlMeals if meal['genre']==genre.value]
     return vlMeals
 
 
