@@ -7,7 +7,6 @@ from .middlewares.validation import Meal
 
 
 from ..Model.data import MEALS
-from ..Model.schema import MealModel
 
 
 app = FastAPI()
@@ -29,7 +28,9 @@ async def home () -> dict [str, str]:
 
 @app.get ('/meals')
 
-async def Meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[MealModel] :
+async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[Meal] :
+    print (type(genre))
+    print (genre)
     vlMeals = MEALS.copy()
     if name:
         vlMeals = [meal for meal in vlMeals if meal['name']==name]
@@ -38,3 +39,14 @@ async def Meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[M
     return vlMeals
 
 
+
+
+
+@app.post ('/meals')
+
+async def meals_ ( meal: Meal ) -> Meal :
+    id = MEALS[-1]['id'] + 1
+    meal = {'id':id, 'name':Meal['name'], 'genre':Meal['genre']}
+    MEALS.append (meal)
+    print (MEALS)
+    return Meal(**meal)

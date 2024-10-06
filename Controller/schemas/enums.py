@@ -2,7 +2,6 @@
 from enum import Enum
 
 class EnumMeals (Enum):
-    GENERE1 = 'genre1'
-    GENERE2 = 'genre2'
-    GENERE3 = 'genre3'
-
+    att1 = 'genre1'
+    att2 = 'genre2'
+    att3 = 'genre3'
