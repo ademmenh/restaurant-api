@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi import HTTPException
 
-from .schemas.enums import EnumGetGenre
+from .schemas.enums import EnumMeals
 from .schemas.data import MEALS
 
 from .middlewares.validation import Meal
@@ -26,45 +26,12 @@ async def home () -> dict [str, str]:
 
 
 
-
-
-
 @app.get ('/meals')
 
-async def Meals () -> list[Meal] :
-    return [ meal for meal in MEALS ]
-
-
-
-@app.get ('/meals/mid/')
-
-async def MealMid ( mid :int|None =None ) -> list[Meal] | Meal :
-    if mid is None:
-        return [ meal for meal in MEALS ]
-    else:
-        for meal in MEALS:
-            if meal['id']==mid :
-                return Meal(**meal)
-        raise HTTPException (status_code=404, detail=f'the mid {mid} do not exist!')
-
-
-
-@app.get ('/meals/genre/{genre}')
-
-async def MealGenre ( genre:EnumGetGenre ) -> list[Meal]:
-    return [ Meal(**meal) for meal in MEALS if meal['genre'].lower() == genre.value ]
-
-
-
-@app.get ('/meals/name/{name}')
-
-async def MealName ( name:str ) -> Meal:
-    for meal in MEALS:
-        if meal['name'] == name:
-            return Meal(**meal)
-            break
-    raise HTTPException (status_code=404, detail=f'the meal {name} do not exist !')
-
-
-
-
+async def Meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[Meal] :
+    vlMeals = [Meal(**meal) for meal in MEALS]
+    if name:
+        vlMeals = [meal for meal in vlMeals if meal.name==name]
+    if genre:
+        vlMeals = [meal for meal in vlMeals if meal.genre==genre.value]
+    return vlMeals
