@@ -24,12 +24,12 @@ async def home () -> dict [str, str]:
 
 
 @app.get ('/meals')
-async def meals () -> list[Meal] :
+async def Meals () -> list[Meal] :
     return [ Meal(**meal) for meal in MEALS ]
 
 
-@app.get ('/meals/{mid}')
-async def meal (mid : int) -> Meal :
+@app.get ('/meals/id/{mid}')
+async def MealMid (mid : int) -> Meal :
     if isinstance (mid, int):
         for meal in MEALS:
             if meal['id']==mid :
@@ -40,14 +40,18 @@ async def meal (mid : int) -> Meal :
         raise HTTPException (status_code=404, detail='the mid must be string!')
 
 
-
-
-
-@app.get ('/genre/{genre}')
-async def genre ( genre:EnumGetGenre ) -> list[Meal]:
+@app.get ('/meals/genre/{genre}')
+async def MealGenre ( genre:EnumGetGenre ) -> list[Meal]:
     return [ Meal(**meal) for meal in MEALS if meal['genre'].lower() == genre.value ]
 
 
-
+@app.get ('/meals/name/{name}')
+async def MealName ( name:str ) -> Meal:
+    for meal in MEALS:
+        if meal['name'] == name:
+            return meal
+            break
+    
+    raise HTTPException (status_code=404, detail=f'the meal {name} do not exist !')
 
 
