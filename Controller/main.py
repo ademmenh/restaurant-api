@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi import HTTPException
 
 from .schemas.enums import EnumMeals
-from .middlewares.validation import Meal
+from .middlewares.pydantic import Meal
 
 
 from ..Model.data import MEALS
@@ -29,8 +29,6 @@ async def home () -> dict [str, str]:
 @app.get ('/meals')
 
 async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[Meal] :
-    print (type(genre))
-    print (genre)
     vlMeals = MEALS.copy()
     if name:
         vlMeals = [meal for meal in vlMeals if meal['name']==name]
@@ -44,9 +42,10 @@ async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[M
 
 @app.post ('/meals')
 
-async def meals_ ( name: str, genre: str) -> Meal :
-    id = MEALS[-1]['id'] + 1
-    meal = {'id':id, 'name':name, 'genre':genre}
+async def meals_ ( aname: str, agenre: EnumMeals) -> None:
+    aid = MEALS[-1]['id'] + 1
+
+    meal = {'id':aid, 'name':aname, 'genre':agenre.value}
     MEALS.append (meal)
-    return Meal(**meal)
+
 
