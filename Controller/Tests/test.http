@@ -1,8 +1,0 @@
-POST http://localhost:8000/meals
-Content-Type: application/json
-
-{
-    "id" : 12,
-    "name" : "meal4",
-    "genre" : "genre1"
-}
