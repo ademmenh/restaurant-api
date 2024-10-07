@@ -27,7 +27,6 @@ async def home () -> dict [str, str]:
 
 
 @app.get ('/meals')
-
 async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[Meal] :
     vlMeals = MEALS.copy()
     if name:
@@ -41,11 +40,8 @@ async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[M
 
 
 @app.post ('/meals')
-
 async def meals_ ( aname: str, agenre: EnumMeals) -> None:
     aid = MEALS[-1]['id'] + 1
 
     meal = {'id':aid, 'name':aname, 'genre':agenre.value}
     MEALS.append (meal)
-
-
