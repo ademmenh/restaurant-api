@@ -16,8 +16,10 @@ from ..Model import connection
 
 @asynccontextmanager
 async def lifespan (app: FastAPI):
-    connection.init_db()
+    connection.init()
     yield
+
+
 
 app = FastAPI(lifespan=lifespan)
 
