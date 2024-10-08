@@ -1,11 +1,9 @@
 
-from fastapi import FastAPI
-from fastapi import HTTPException
-
+from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
 
 from .schemas.enums import EnumMeals
-from .middlewares.pydantic import Meal
+from .middlewares.pydantic import Meal, POSTMeal
 
 
 from ..Model.data import MEALS
@@ -51,9 +49,17 @@ async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[M
 
 
 
-@app.post ('/meals')
-async def meals_ ( aname: str, agenre: EnumMeals) -> None:
-    aid = MEALS[-1]['id'] + 1
+# @app.post ('/meals')
+# async def meals_ ( aname: str, agenre: EnumMeals) -> None:
+#     aid = MEALS[-1]['id'] + 1
 
-    meal = {'id':aid, 'name':aname, 'genre':agenre.value}
+#     meal = {'id':aid, 'name':aname, 'genre':agenre.value}
+#     MEALS.append (meal)
+
+@app.post ('/meals')
+async def meals_ ( meal : POSTMeal ) -> None:
+    viid = MEALS[-1]['id'] + 1
+
+    meal = {'id':viid, 'name':meal.name, 'genre':meal.genre.value}
     MEALS.append (meal)
+
