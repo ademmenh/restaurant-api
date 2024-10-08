@@ -2,14 +2,24 @@
 from fastapi import FastAPI
 from fastapi import HTTPException
 
+from contextlib import asynccontextmanager
+
 from .schemas.enums import EnumMeals
 from .middlewares.pydantic import Meal
 
 
 from ..Model.data import MEALS
+from ..Model import schemas
+from ..Model import connection
 
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan (app: FastAPI):
+    connection.init_db()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 
 

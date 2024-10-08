@@ -1,5 +1,5 @@
 
-from sqlModel import create_engine, SQLModel, Session
+from sqlmodel import SQLModel, create_engine, Session
 
 DATABASE_URL = 'sqlite:///db.sqlite'
 
