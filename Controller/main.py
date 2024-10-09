@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
 
 from .schemas.enums import EnumMeals
-from .middlewares.pydantic import Meal, POSTMeal
+from .middlewares.pydantic import Meal, GETMeal, POSTMeal
 
 
 from ..Model.data import MEALS
@@ -37,12 +37,12 @@ async def home () -> dict [str, str]:
 
 
 @app.get ('/meals')
-async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[Meal] :
+async def meals ( meal:GETMeal ) -> list[Meal] :
     vlMeals = MEALS.copy()
-    if name:
-        vlMeals = [meal for meal in vlMeals if meal['name']==name]
-    if genre:
-        vlMeals = [meal for meal in vlMeals if meal['genre']==genre.value]
+    if meal.name:
+        vlMeals = [vdMeal for vdMeal in vlMeals if vdMeal['name']==meal.name]
+    if meal.genre:
+        vlMeals = [vdMeal for vdMeal in vlMeals if vdMeal['genre']==meal.genre]
     return vlMeals
 
 

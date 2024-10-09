@@ -7,6 +7,16 @@ from ..schemas.enums import EnumMeals
 
 GENRE = ('Genre1', 'Genre2', 'Genre3')
 
+
+class Meal (BaseModel):
+    id : int
+    name : str
+    genre : str
+
+
+
+
+
 class GETMeal (BaseModel):
     name : str
     genre : str
@@ -22,7 +32,7 @@ class GETMeal (BaseModel):
         if genre:
             genre = genre.title ()
         return genre
-            
+         
 
 
 
