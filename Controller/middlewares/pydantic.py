@@ -11,6 +11,10 @@ class POSTMeal (BaseModel):
     name : str
     genre : EnumMeals
 
-    @validator ('name')
+    @validator ('name', pre=True)
     def check_name (cls, name):
         return name.title()
+
+    @validator ('genre', pre=True)
+    def check_genre (cls, genre):
+        return genre.lower()

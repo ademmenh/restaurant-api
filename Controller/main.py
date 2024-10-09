@@ -51,9 +51,9 @@ async def meals ( name: str|None = None, genre: EnumMeals|None = None) -> list[M
 
 @app.post ('/meals')
 async def meals_ ( meal : POSTMeal ) -> None:
-
     viid = MEALS[-1]['id'] + 1
 
     meal = {'id':viid, 'name':meal.name, 'genre':meal.genre.value}
+    # print (meal)
     MEALS.append (meal)
 
