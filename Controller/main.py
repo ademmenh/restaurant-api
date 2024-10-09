@@ -2,9 +2,7 @@
 from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
 
-from .schemas.enums import EnumMeals
 from .middlewares.pydantic import Meal, GETMeal, POSTMeal
-
 
 from ..Model.data import MEALS
 from ..Model import schemas

@@ -1,7 +1,6 @@
 
 from fastapi import HTTPException
 from pydantic import BaseModel, validator
-from ..schemas.enums import EnumMeals
 
 
 
