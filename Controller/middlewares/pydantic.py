@@ -5,13 +5,24 @@ from ..schemas.enums import EnumMeals
 
 
 
-GENRE = ('genre1', 'genre2', 'genre3')
+GENRE = ('Genre1', 'Genre2', 'Genre3')
 
-class Meal (BaseModel):
-    id : int
+class GETMeal (BaseModel):
     name : str
-    genre : EnumMeals
+    genre : str
 
+    @validator ('name')
+    def check_name (cls, name):
+        if name:
+            name = name.title()
+        return name
+
+    @validator ('genre')
+    def chack_genre (cls, genre):
+        if genre:
+            genre = genre.title ()
+        return genre
+            
 
 
 
@@ -29,7 +40,7 @@ class POSTMeal (BaseModel):
 
     @validator ('genre')
     def check_genre (cls, genre):
-        genre = genre.lower()
+        genre = genre.title()
         if genre not in GENRE:
             raise HTTPException (status_code=422)
         return genre
