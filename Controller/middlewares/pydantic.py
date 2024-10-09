@@ -18,20 +18,19 @@ class Meal (BaseModel):
 
 
 class GETMeal (BaseModel):
-    name : str
-    genre : str
+
+    name : str | None = None
+    genre : str | None = None
+
+
 
     @validator ('name')
     def check_name (cls, name):
-        if name:
-            name = name.title()
-        return name
+        return name.title()
 
     @validator ('genre')
     def chack_genre (cls, genre):
-        if genre:
-            genre = genre.title ()
-        return genre
+        return genre.title()
          
 
 
