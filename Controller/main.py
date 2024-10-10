@@ -5,22 +5,20 @@ from contextlib import asynccontextmanager
 from .middlewares.pydantic import Meal, GETMeal, POSTMeal
 
 from ..Model.data import MEALS
-from ..Model import schemas
-from ..Model import connection
+from ..Model import orm
+
+
 
 
 
 @asynccontextmanager
-async def lifespan (app: FastAPI):
-    connection.init()
+async def db_lifespan (app: FastAPI):
+    engine = orm.engine ()
+    orm.create_tables (engine)
     yield
 
 
-
-app = FastAPI(lifespan=lifespan)
-
-
-
+app = FastAPI(lifespan=db_lifespan)
 
 
 
@@ -32,8 +30,6 @@ async def home () -> dict [str, str]:
 
 
 
-
-
 @app.get ('/meals')
 async def meals ( meal:GETMeal ) -> list[Meal] :
     vlMeals = MEALS.copy()
@@ -42,8 +38,6 @@ async def meals ( meal:GETMeal ) -> list[Meal] :
     if meal.genre:
         vlMeals = [vdMeal for vdMeal in vlMeals if vdMeal['genre']==meal.genre]
     return vlMeals
-
-
 
 
 
