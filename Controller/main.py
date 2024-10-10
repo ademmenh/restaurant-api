@@ -31,15 +31,11 @@ async def home () -> dict [str, str]:
 
 @app.get ('/meals')
 async def meals ( meal:GETMeal ) -> list[Meal]:
-    return orm.Meal.get_meal(**meal.__dict__)
+    return orm.Meal.get_meal(meal.__dict__)
 
 
 
 @app.post ('/meals')
 async def meals_ ( meal : POSTMeal ) -> None:
-    viid = MEALS[-1]['id'] + 1
-
-    meal = {'id':viid, 'name':meal.name, 'genre':meal.genre}
-    print (meal)
-    MEALS.append (meal)
+    orm.Meal.post_meal (meal.__dict__)
 
