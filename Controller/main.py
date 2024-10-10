@@ -13,8 +13,7 @@ from ..Model import orm
 
 @asynccontextmanager
 async def db_lifespan (app: FastAPI):
-    engine = orm.engine ()
-    orm.create_tables (engine)
+    orm.create_tables (orm.engine)
     yield
 
 
@@ -31,13 +30,8 @@ async def home () -> dict [str, str]:
 
 
 @app.get ('/meals')
-async def meals ( meal:GETMeal ) -> list[Meal] :
-    vlMeals = MEALS.copy()
-    if meal.name:
-        vlMeals = [vdMeal for vdMeal in vlMeals if vdMeal['name']==meal.name]
-    if meal.genre:
-        vlMeals = [vdMeal for vdMeal in vlMeals if vdMeal['genre']==meal.genre]
-    return vlMeals
+async def meals ( meal:GETMeal ) -> list[Meal]:
+    return orm.Meal.get_meal(**meal.__dict__)
 
 
 
