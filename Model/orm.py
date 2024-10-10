@@ -1,7 +1,7 @@
 
 from sqlmodel import create_engine, Session
 from sqlmodel import SQLModel, Field, select
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 
 
 
@@ -25,12 +25,13 @@ class Meal (SQLModel, table=True):
         filters = []
         for key, value in dict.items():
             if value is not None:
-                filters.append(key==value)
+                column = getattr(Meal, key)
+                filters.append(column==value)
 
-        print (filters)
+        # print (filters)
         with Session(engine) as session:
             statement = select(Meal).where(and_(*filters))
-            print (statement)
+            # print (statement)
             return session.exec(statement).all()
 
 
