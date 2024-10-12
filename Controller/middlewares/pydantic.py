@@ -38,7 +38,7 @@ class GETMeal (BaseModel):
 class POSTMeal (BaseModel):
 
     name : str
-    genre : str
+    genre : str | None = None   # Genre3 by default
 
 
     @validator ('name')
