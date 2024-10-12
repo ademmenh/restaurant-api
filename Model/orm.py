@@ -49,9 +49,24 @@ Base = declarative_base ()
 
 
 
-class Meal (Base):
 
+
+engine = create_async_engine('sqlite:///project1/Model/data.db')
+asyncSession = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+
+
+
+
+
+class Meal (Base):
+    __tablename__ = "Meal" 
     id      = Column(Integer, primary_key=True)
     name    = Column(String(15))
     genre   = Column(String(12))
 
+
+
+
+async with engine.conn() as conn:
+    await conn.run_async(Base.metadata.drop_all)
+    await conn.run_async(Base.metadata.create_all)
