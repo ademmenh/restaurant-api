@@ -4,7 +4,6 @@ from contextlib import asynccontextmanager
 
 from .middlewares.pydantic import Meal, GETMeal, POSTMeal
 
-from ..Model.data import MEALS
 from ..Model import orm
 
 
@@ -32,7 +31,6 @@ async def home () -> dict [str, str]:
 @app.get ('/meals')
 async def meals ( meal:GETMeal ) -> list[Meal]:
     return orm.Meal.get_meal(meal.__dict__)
-
 
 
 @app.post ('/meals')
