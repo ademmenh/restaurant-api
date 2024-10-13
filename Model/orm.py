@@ -13,6 +13,16 @@ def create_tables (engine):
 
 
 
+class User (SQLModel, table=True):
+    id : int    = Field (primary_key=True)
+    name : str  = Field (max_length=15)
+    lname : str = Field (max_length=15)
+    gender : str = Field (max_length=1)
+    email : str = Field (max_length=30)
+    phone : str = Field (max_length=15, null=None)
+
+
+
 class Meal (SQLModel, table=True):
     
     id : int    = Field (primary_key=True)
