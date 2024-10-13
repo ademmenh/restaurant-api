@@ -19,7 +19,14 @@ class User (SQLModel, table=True):
     lname : str = Field (max_length=15)
     gender : str = Field (max_length=1)
     email : str = Field (max_length=30)
-    phone : str = Field (max_length=15, null=None)
+    phone : str = Field (max_length=15)
+
+    def post_user (dict):
+        with Session(engine) as session:
+            user = User (**dict)
+            session.add_all([user])
+            session.commit()
+            session.refresh(user)
 
 
 
