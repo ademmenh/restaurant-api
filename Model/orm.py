@@ -1,6 +1,6 @@
 
 from sqlmodel import create_engine, Session
-from sqlmodel import SQLModel, Field, select
+from sqlmodel import SQLModel, Field, Relationship,select
 from sqlalchemy import and_, or_
 
 
@@ -20,6 +20,7 @@ class User (SQLModel, table=True):
     gender : str = Field (max_length=1)
     email : str = Field (max_length=30)
     phone : str = Field (max_length=15)
+    purchase : list["Purchase"] = Relationship(back_populates="user")
 
     def post_user (dict):
         with Session(engine) as session:
@@ -35,9 +36,11 @@ class Meal (SQLModel, table=True):
     id : int    = Field (primary_key=True)
     name : str  = Field (max_length=15, unique=True)
     genre : str = Field (max_length=10, default='Genre3')
+    price : int = Field ()
+    purchase : list["Purchase"] = Relationship(back_populates="meal")
 
 
-    
+
     def get_meal (dict):
         filters = []
         for key, value in dict.items():
@@ -59,3 +62,10 @@ class Meal (SQLModel, table=True):
             session.commit()
             session.refresh(meal)
 
+
+
+class Purchase (SQLModel, table=True):
+    userId : int = Field (primary_key=True, foreign_key="user.id")
+    mealId : int = Field (primary_key=True, foreign_key="meal.id")
+    user : User  = Relationship (back_populates='purchase')
+    meal : Meal  = Relationship (back_populates='purchase')

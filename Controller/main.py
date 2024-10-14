@@ -10,6 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 
 
+
 @asynccontextmanager
 async def db_lifespan (app: FastAPI):
     orm.create_tables (orm.engine)
