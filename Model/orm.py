@@ -69,3 +69,10 @@ class Purchase (SQLModel, table=True):
     mealId : int = Field (primary_key=True, foreign_key="meal.id")
     user : User  = Relationship (back_populates='purchase')
     meal : Meal  = Relationship (back_populates='purchase')
+
+    def post_purchase (dict):
+        with Session(engine) as session:
+            purchase = Purchase (**dict)
+            session.add_all([purchase])
+            session.commit()
+            session.refresh(purchase)
