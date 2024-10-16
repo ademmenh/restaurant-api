@@ -12,10 +12,6 @@ class Meal (BaseModel):
     name : str
     genre : str
 
-
-
-
-
 class GETMeal (BaseModel):
 
     name : str | None = None
@@ -31,10 +27,6 @@ class GETMeal (BaseModel):
     def chack_genre (cls, genre):
         return genre.title()
          
-
-
-
-
 class POSTMeal (BaseModel):
 
     name : str
@@ -52,3 +44,4 @@ class POSTMeal (BaseModel):
         if genre not in GENRE:
             raise HTTPException (status_code=422)
         return genre
+

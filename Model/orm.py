@@ -1,26 +1,23 @@
 
-from sqlmodel import create_engine, Session
-from sqlmodel import SQLModel, Field, Relationship,select
-from sqlalchemy import and_, or_
+from sqlalchemy import create_engine, create_session
+from sqlalchemy.orm import Session
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+from sqlalchemy import select, or_, and_
 
 
 
 
-engine = create_engine('sqlite:///project1/Model/orm.sqlite')
 
-def create_tables (engine):
-    SQLModel.metadata.create_all(engine)
-
-
-
-class User (SQLModel, table=True):
-    id : int    = Field (primary_key=True)
-    name : str  = Field (max_length=15)
-    lname : str = Field (max_length=15)
-    gender : str = Field (max_length=1)
-    email : str = Field (max_length=30)
-    phone : str = Field (max_length=15)
-    purchase : list["Purchase"] = Relationship(back_populates="user")
+class User (Base):
+    __tablename__ = 'User'
+    id          = Column (Integer, primary_key=True)
+    name        = Column (String(15))
+    lname       = Column (String(15))
+    gender      = Column (String(1))
+    email       = Column (String(30))
+    phone       = Column (String(15))
 
     def post_user (dict):
         with Session(engine) as session:
@@ -31,14 +28,14 @@ class User (SQLModel, table=True):
 
 
 
-class Meal (SQLModel, table=True):
-    
-    id : int    = Field (primary_key=True)
-    name : str  = Field (max_length=15, unique=True)
-    genre : str = Field (max_length=10, default='Genre3')
-    price : int = Field ()
-    purchase : list["Purchase"] = Relationship(back_populates="meal")
 
+class Meal (Base):
+    __tablename__ = 'Meal'
+    
+    id          = Column (Integer, primary_key=True)
+    name        = Column (String(15))
+    genre       = Column (String(15), default='Genre3')
+    price       = Column (Integer)
 
 
     def get_meal (dict):
@@ -48,7 +45,6 @@ class Meal (SQLModel, table=True):
                 column = getattr(Meal, key)
                 filters.append(column==value)
 
-        # print (filters)
         with Session(engine) as session:
             statement = select(Meal).where(and_(*filters))
             # print (statement)
@@ -64,11 +60,11 @@ class Meal (SQLModel, table=True):
 
 
 
-class Purchase (SQLModel, table=True):
-    userId : int = Field (primary_key=True, foreign_key="user.id")
-    mealId : int = Field (primary_key=True, foreign_key="meal.id")
-    user : User  = Relationship (back_populates='purchase')
-    meal : Meal  = Relationship (back_populates='purchase')
+class Purchase (Base):
+    userId      = Field (primary_key=True, foreign_key="user.id")
+    mealId      = Field (primary_key=True, foreign_key="meal.id")
+    user        = Relationship ('User', back_populates='purchase')
+    meal        = Relationship ('Meal', back_populates='purchase')
 
     def post_purchase (dict):
         with Session(engine) as session:
@@ -76,3 +72,4 @@ class Purchase (SQLModel, table=True):
             session.add_all([purchase])
             session.commit()
             session.refresh(purchase)
+

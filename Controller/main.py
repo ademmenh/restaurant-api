@@ -1,22 +1,17 @@
 
 from fastapi import FastAPI, HTTPException, Depends
-from contextlib import asynccontextmanager
-
 from .middlewares.pydantic import Meal, GETMeal, POSTMeal
+from contextlib import asynccontextmanager
 
 from ..Model import orm
 
-from fastapi.security import OAuth2PasswordBearer
-
-
+# from fastapi.security import OAuth2PasswordBearer
 
 
 @asynccontextmanager
 async def db_lifespan (app: FastAPI):
-    orm.create_tables (orm.engine)
+    orm.create_tables()
     yield
-
-
 
 
 
@@ -27,14 +22,6 @@ app = FastAPI(lifespan=db_lifespan)
 @app.get ('/home')
 async def home () -> dict [str, str]:
     return {"home":"this is home"}
-
-
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-@app.get ('/auth')
-async def auth (token=Depends(oauth2_scheme)):
-    return token
 
 
 
